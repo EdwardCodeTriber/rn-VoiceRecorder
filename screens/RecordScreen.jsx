@@ -24,47 +24,25 @@ const RecordScreen = ({ navigation }) => {
 
   // hook for permission state
   useEffect(() => {
-    requestPermissions();
     return () => {
       audioRecorderPlayer.stopRecorder();
     };
   }, []);
 
-  // Platform based permissions
-  const requestPermissions = async () => {
-    if (Platform.OS === "android") {
-      try {
-        const granted = await PermissionsAndroid.requestMultiple([
-          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        ]);
-        return Object.values(granted).every(
-          (permission) => permission === PermissionsAndroid.RESULTS.GRANTED
-        );
-      } catch (err) {
-        console.warn(err);
-        return false;
-      }
-    }
-    return true;
-  };
-
   const onStartRecord = async () => {
     if (!title.trim()) {
-      Alert.alert("Error", "Please enter a title for your recording");
+      Alert.alert('Error', 'Please enter a title for your recording');
       return;
     }
 
     try {
       const result = await audioRecorderPlayer.startRecorder();
       audioRecorderPlayer.addRecordBackListener((e) => {
-        setRecordTime(
-          audioRecorderPlayer.mmssss(Math.floor(e.currentPosition))
-        );
+        setRecordTime(audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)));
       });
       setIsRecording(true);
     } catch (error) {
-      console.error("Error starting recording:", error);
+      console.error('Error starting recording:', error);
     }
   };
 
@@ -85,7 +63,7 @@ const RecordScreen = ({ navigation }) => {
       await saveRecording(newRecording);
       navigation.goBack();
     } catch (error) {
-      console.error("Error stopping recording:", error);
+      console.error('Error stopping recording:', error);
     }
   };
 

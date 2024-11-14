@@ -1,7 +1,8 @@
 const LightTheme = {
     isDark: false,
     colors:{
-        background: "#F2F0F7"
+        background: "#F2F0F7",
+        text: "#000"
     }
 }
 
