@@ -55,4 +55,23 @@ const App = () => {
   );
 };
 
+// const styles = StyleSheet.create({
+//   header: {
+//     backgroundColor: '#2196F3', // Primary color
+//     elevation: 0, // Remove shadow 
+//     shadowOpacity: 0, // Remove shadow 
+//   },
+//   headerTitle: {
+//     color: '#FFFFFF',
+//     fontSize: 20,
+//     fontWeight: 'bold',
+//   },
+//   headerButton: {
+//     marginRight: 15,
+//   },
+//   cardStyle: {
+//     backgroundColor: '#F5F5F5', // Light background for screens
+//   },
+// });
+
 export default App;
