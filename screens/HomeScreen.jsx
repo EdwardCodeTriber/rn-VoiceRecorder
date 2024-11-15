@@ -11,7 +11,6 @@ import { useAudio } from "../context/AudioContext";
 import RecordingItem from "./RecordingItem";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-
 // Home Screens
 const HomeScreen = ({ navigation }) => {
   const { recordings } = useAudio();
