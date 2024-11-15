@@ -1,30 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
-import AudioRecorderPlayer from "react-native-audio-recorder-player";
+import { Audio } from "expo-av";
 import { useAudio } from "../context/AudioContext";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-const audioPlayer = new AudioRecorderPlayer();
-
-
-// Recorded Items 
 const RecordingItem = ({ recording }) => {
+  const [sound, setSound] = useState();
   const [isPlaying, setIsPlaying] = useState(false);
   const { deleteRecording } = useAudio();
+
+  // Clean up sound when component unmounts
+  useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
 
   // Option to play and pause recorded/recording Item
   const onPlayPause = async () => {
     try {
-      if (isPlaying) {
-        await audioPlayer.stopPlayer();
-        setIsPlaying(false);
+      if (sound) {
+        if (isPlaying) {
+          await sound.pauseAsync();
+          setIsPlaying(false);
+        } else {
+          await sound.playAsync();
+          setIsPlaying(true);
+        }
       } else {
-        await audioPlayer.startPlayer(recording.uri);
-        audioPlayer.addPlayBackListener(() => {});
+        // Load the sound first time
+        const { sound: newSound } = await Audio.Sound.createAsync(
+          { uri: recording.uri },
+          { shouldPlay: true }
+        );
+
+        // Add status update listener
+        newSound.setOnPlaybackStatusUpdate((status) => {
+          if (status.didJustFinish) {
+            setIsPlaying(false);
+          }
+        });
+
+        setSound(newSound);
         setIsPlaying(true);
       }
     } catch (error) {
       console.error("Error playing audio:", error);
+      Alert.alert("Error", "Failed to play audio");
     }
   };
 
