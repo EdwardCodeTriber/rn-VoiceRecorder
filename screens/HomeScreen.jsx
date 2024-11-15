@@ -52,7 +52,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#334155",
   },
   searchInput: {
     margin: 10,
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 20,
     bottom: 20,
-    backgroundColor: "#2196F3",
+    backgroundColor: "#16a34a",
     width: 56,
     height: 56,
     borderRadius: 28,

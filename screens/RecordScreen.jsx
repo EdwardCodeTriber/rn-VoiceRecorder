@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#334155",
   },
   input: {
     width: "80%",
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: "#2196F3",
+    backgroundColor: "#16a34a",
     alignItems: "center",
     justifyContent: "center",
   },

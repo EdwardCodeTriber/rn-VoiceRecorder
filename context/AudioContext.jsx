@@ -12,6 +12,7 @@ export const AudioProvider = ({ children }) => {
     playbackSpeed: 1.0,
   });
 
+  // Save recording 
   const saveRecording = async (recording) => {
     try {
       const updatedRecordings = [...recordings, recording];
