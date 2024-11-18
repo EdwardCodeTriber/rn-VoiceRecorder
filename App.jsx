@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
+import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./screens/HomeScreen";
 import RecordScreen from "./screens/RecordScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import { AudioProvider } from "./context/AudioContext";
-import { Audio } from 'expo-av';
+import { Audio } from "expo-av";
 
 const Stack = createStackNavigator();
 
@@ -13,15 +14,15 @@ async function configureAudio() {
   try {
     await Audio.setAudioModeAsync({
       // Changed to true since your app records audio
-      allowsRecordingIOS: true, 
+      allowsRecordingIOS: true,
       playsInSilentModeIOS: true,
       shouldDuckAndroid: true,
       playThroughEarpieceAndroid: false,
       // Changed to true if you want recording to continue in background
-      staysActiveInBackground: true, 
+      staysActiveInBackground: true,
     });
   } catch (error) {
-    console.error('Error configuring audio:', error);
+    console.error("Error configuring audio:", error);
   }
 }
 
@@ -38,6 +39,7 @@ const App = () => {
             name="Home"
             component={HomeScreen}
             options={{ title: "Voice Notes" }}
+            style={styles.header}
           />
           <Stack.Screen
             name="Record"
@@ -48,6 +50,7 @@ const App = () => {
             name="Settings"
             component={SettingsScreen}
             options={{ title: "Settings" }}
+            style={styles.headerButton}
           />
         </Stack.Navigator>
       </NavigationContainer>
@@ -55,23 +58,23 @@ const App = () => {
   );
 };
 
-// const styles = StyleSheet.create({
-//   header: {
-//     backgroundColor: '#2196F3', // Primary color
-//     elevation: 0, // Remove shadow 
-//     shadowOpacity: 0, // Remove shadow 
-//   },
-//   headerTitle: {
-//     color: '#FFFFFF',
-//     fontSize: 20,
-//     fontWeight: 'bold',
-//   },
-//   headerButton: {
-//     marginRight: 15,
-//   },
-//   cardStyle: {
-//     backgroundColor: '#F5F5F5', // Light background for screens
-//   },
-// });
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: "#020617", // Primary color
+    elevation: 0, 
+    shadowOpacity: 0, 
+  },
+  headerTitle: {
+    color: "#FFFFFF",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  headerButton: {
+    marginRight: 15,
+  },
+  cardStyle: {
+    backgroundColor: "#F5F5F5", // Light background for screens
+  },
+});
 
 export default App;

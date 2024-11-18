@@ -7,9 +7,17 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 const RecordingItem = ({ recording }) => {
   const [sound, setSound] = useState();
   const [isPlaying, setIsPlaying] = useState(false);
+  const [position, setPosition] = useState(0);
+  const [duration, setDuration] = useState(0);
   const { deleteRecording } = useAudio();
 
-  // Clean up sound when component unmounts
+  // Format time in milliseconds to mm:ss
+  const formatTime = (millis) => {
+    const minutes = Math.floor(millis / 60000);
+    const seconds = ((millis % 60000) / 1000).toFixed(0);
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  };
+
   useEffect(() => {
     return sound
       ? () => {
@@ -18,7 +26,6 @@ const RecordingItem = ({ recording }) => {
       : undefined;
   }, [sound]);
 
-  // Option to play and pause recorded/recording Item
   const onPlayPause = async () => {
     try {
       if (sound) {
@@ -33,15 +40,9 @@ const RecordingItem = ({ recording }) => {
         // Load the sound first time
         const { sound: newSound } = await Audio.Sound.createAsync(
           { uri: recording.uri },
-          { shouldPlay: true }
+          { shouldPlay: true },
+          onPlaybackStatusUpdate
         );
-
-        // Add status update listener
-        newSound.setOnPlaybackStatusUpdate((status) => {
-          if (status.didJustFinish) {
-            setIsPlaying(false);
-          }
-        });
 
         setSound(newSound);
         setIsPlaying(true);
@@ -49,6 +50,17 @@ const RecordingItem = ({ recording }) => {
     } catch (error) {
       console.error("Error playing audio:", error);
       Alert.alert("Error", "Failed to play audio");
+    }
+  };
+
+  const onPlaybackStatusUpdate = (status) => {
+    if (status.isLoaded) {
+      setPosition(status.positionMillis);
+      setDuration(status.durationMillis);
+      if (status.didJustFinish) {
+        setIsPlaying(false);
+        setPosition(0);
+      }
     }
   };
 
@@ -74,7 +86,22 @@ const RecordingItem = ({ recording }) => {
         <Text style={styles.date}>
           {new Date(recording.date).toLocaleDateString()}
         </Text>
-        <Text style={styles.duration}>{recording.duration}</Text>
+        <View style={styles.durationContainer}>
+          <Text style={styles.duration}>
+            {formatTime(position)} / {formatTime(duration || 0)}
+          </Text>
+          {/*progress bar of the audio */}
+          {duration > 0 && (
+            <View style={styles.progressBar}>
+              <View
+                style={[
+                  styles.progress,
+                  { width: `${(position / duration) * 100}%` },
+                ]}
+              />
+            </View>
+          )}
+        </View>
       </View>
       <View style={styles.actions}>
         <TouchableOpacity onPress={onPlayPause}>
@@ -114,9 +141,24 @@ const styles = StyleSheet.create({
     color: "#666",
     marginTop: 4,
   },
+  durationContainer: {
+    marginTop: 8,
+  },
   duration: {
     fontSize: 12,
     color: "#666",
+    marginBottom: 4,
+  },
+  progressBar: {
+    height: 3,
+    backgroundColor: "#E0E0E0",
+    borderRadius: 1.5,
+    overflow: "hidden",
+    marginTop: 4,
+  },
+  progress: {
+    height: "100%",
+    backgroundColor: "#2196F3",
   },
   actions: {
     flexDirection: "row",
