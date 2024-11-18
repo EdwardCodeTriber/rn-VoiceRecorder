@@ -2,6 +2,10 @@
 
 A React Native-based mobile application for recording, managing, and playing voice notes. The app provides an intuitive interface for users to create, organize, and access their digital journal of audio recordings.
 
+## Figma Design
+
+ - https://www.figma.com/design/uZOBqHtPMzQFwCcW44Vbjo/Recorder-Design?node-id=0-1&node-type=canvas&t=80FivXIUKw2txmPx-0
+
 ## Features
 
 ### Core Features

@@ -10,6 +10,7 @@ const RecordingItem = ({ recording }) => {
   const [position, setPosition] = useState(0);
   const [duration, setDuration] = useState(0);
   const { deleteRecording } = useAudio();
+  
 
   // Format time in milliseconds to mm:ss
   const formatTime = (millis) => {
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     padding: 15,
-    backgroundColor: "#fff",
+    backgroundColor: "#64748b",
     marginHorizontal: 10,
     marginVertical: 5,
     borderRadius: 5,
@@ -138,7 +139,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 12,
-    color: "#666",
+    color: "#f8fafc",
     marginTop: 4,
   },
   durationContainer: {
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
   },
   duration: {
     fontSize: 12,
-    color: "#666",
+    color: "#f8fafc",
     marginBottom: 4,
   },
   progressBar: {
